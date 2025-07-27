@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daksh Agarwal - 3D Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span>Daksh</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+                <div class="shape shape-5"></div>
+            </div>
+            <div class="particles" id="particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-intro">
+                <h1 class="hero-title">
+                    Hi, I'm <span class="gradient-text">Daksh Agarwal</span>
+                </h1>
+                <div class="typewriter-container">
+                    <h2 class="typewriter" id="typewriter">Software Developer Engineer</h2>
+                </div>
+                <p class="hero-description">
+                    Full-Stack Developer proficient in C++, JavaScript, and the MERN stack with a repeated success of building production-ready apps. Maintained a 400+ day LeetCode streak and led the winning team at the Smart India Hackathon.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn--primary btn-3d">Get In Touch</a>
+                    <a href="Daksh Agarwal ABES Institute Of Technology.pdf" class="btn btn--secondary btn-3d">Download Resume</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        I'm a passionate Software Developer Engineer with expertise in full-stack development. 
+                        I thrive on creating innovative solutions and have experience building production-ready applications 
+                        using modern technologies like the MERN stack.
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat-card" data-target="400">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">LeetCode Days</div>
+                        </div>
+                        <div class="stat-card" data-target="700">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">DSA Problems</div>
+                        </div>
+                        <div class="stat-card" data-target="10">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Innovation Projects</div>
+                        </div>
+                        <!-- <div class="stat-card" data-target="95"> -->
+                            <!-- <div class="stat-number">0</div>
+                            <div class="stat-label">ML Accuracy %</div>
+                        </div>
+                        <div class="stat-card" data-target="95">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">ML Accuracy %</div>
+                        </div>
+                        <div class="stat-card" data-target="95">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">ML Accuracy %</div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-tilt>
+                    <div class="project-image">
+                        <img src="image.png" alt="Project Screenshot" class="project-img">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://maid-management2.onrender.com/" target="_blank" class="project-link">
+                                    <span>Live Demo</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Maid Management System</h3>
+                        <p class="project-description">
+                            Spearheaded the deployment of a MERN stack Maid Management System, integrating real-time updates 
+                            and notifications, which accelerated maid assignment completion rates by 40%.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">MERN Stack</span>
+                            <span class="tech-tag">Real-time Updates</span>
+                            <span class="tech-tag">Authentication</span>
+                        </div>
+                        <div class="project-achievements">
+                            <div class="achievement">Built MERN maid system with Aadhaar auth</div>
+                            <div class="achievement">Cut manual work 50%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-tilt>
+                    <div class="project-image">
+                        <img src="whether application.png" alt="Project Screenshot" class="project-img">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://glittery-bavarois-37c75b.netlify.app/" target="_blank" class="project-link">
+                                    <span>Live Demo</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Weather Forecasting Tool</h3>
+                        <p class="project-description">
+                            Developed a responsive weather application utilizing HTML, CSS, and JavaScript, 
+                            integrating machine learning algorithms to achieve 95% prediction accuracy.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Machine Learning</span>
+                            <span class="tech-tag">Random Forest</span>
+                        </div>
+                        <div class="project-achievements">
+                            <div class="achievement">Built with JS & ML</div>
+                            <div class="achievement">95% prediction accuracy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Experience & Education</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>AI & ML Training</h3>
+                            <span class="timeline-org">NVIDIA</span>
+                            <span class="timeline-period">Mar 2024 – Mar 2025</span>
+                        </div>
+                        <ul class="timeline-achievements">
+                            <li>Applied supervised and unsupervised learning techniques, boosting accuracy by 20%</li>
+                            <li>Constructed and optimized deep neural networks, increasing NLP and vision accuracy by 25%</li>
+                            <li>Implemented and deployed AI models, achieving 90%+ accuracy in text and image tasks</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>C++ & Data Structures Training</h3>
+                            <span class="timeline-org">Coding Ninjas</span>
+                            <span class="timeline-period">Feb 2023 - Dec 2023</span>
+                        </div>
+                        <ul class="timeline-achievements">
+                            <li>Solved 700+ DSA problems on Coding Ninjas, LeetCode, CodeChef ranked top 5% through advanced techniques</li>
+                            <li>Achieved top 5% ranking via continuous practice and deep understanding</li>
+                            <li>Mastered OOP principles, reducing code duplication by 30%</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Bachelor of Technology - CSE</h3>
+                            <span class="timeline-org">ABES Institute of Technology</span>
+                            <span class="timeline-period">Nov 2022 - Oct 2026</span>
+                        </div>
+                        <ul class="timeline-achievements">
+                            <li>Mastered fundamental computer science concepts including algorithm design</li>
+                            <li>Improved code efficiency by 20% and reduced memory usage by 10%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Languages</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">C++</div>
+                        <div class="skill-item">JavaScript</div>
+                        <div class="skill-item">Python</div>
+                        <div class="skill-item">MySQL</div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Frameworks</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">React</div>
+                        <div class="skill-item">Node.js</div>
+                        <div class="skill-item">Express.js</div>
+                        <div class="skill-item">Redux</div>
+                        <div class="skill-item">Spring Boot</div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Concepts</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">OOP</div>
+                        <div class="skill-item">Data Structures</div>
+                        <div class="skill-item">Algorithms</div>
+                        <div class="skill-item">Microservices</div>
+                        <div class="skill-item">CI/CD</div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Tools</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">Git</div>
+                        <div class="skill-item">GitHub</div>
+                        <div class="skill-item">Netlify</div>
+                        <div class="skill-item">Linux</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="achievements">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Key Achievements</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">🏆</div>
+                    <div class="achievement-content">
+                        <h3>Smart India Hackathon Winner</h3>
+                        <p>Led the winning team at Smart India Hackathon (college level), securing 1st place</p>
+                        <div class="achievement-metric">1st Place</div>
+                    </div>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon">🔥</div>
+                    <div class="achievement-content">
+                        <h3>LeetCode Consistency</h3>
+                        <p>Maintained a 400+ day streak, demonstrating consistency in DSA & competitive programming</p>
+                        <div class="achievement-metric">400+ Days</div>
+                    </div>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon">💡</div>
+                    <div class="achievement-content">
+                        <h3>Innovation Leadership</h3>
+                        <p>Drove 10+ innovation initiatives at IIC ABESIT, supporting entrepreneurship and product development</p>
+                        <div class="achievement-metric">10+ Projects</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <a href="mailto:Agarwaldaksh360@gmail.com">Agarwaldaksh360@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-details">
+                            <h3>Phone</h3>
+                            <a href="tel:+919311658612">+91 9311658612</a>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/dakshagarwal5/" class="social-link">LinkedIn</a>
+                        <a href="https://github.com/Dakshagarwal5" class="social-link">GitHub</a>
+                        <a href="https://www.instagram.com/dakshagarwal5/" class="social-link">Instagram</a>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn-3d btn--full-width">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Daksh Agarwal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
