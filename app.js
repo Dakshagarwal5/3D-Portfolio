@@ -324,8 +324,6 @@ function initProjectTilt() {
         });
     });
 }
-
-// Contact Form - Fixed with proper validation and feedback
 function initContactForm() {
     const contactForm = document.getElementById('contactForm');
     
@@ -333,65 +331,81 @@ function initContactForm() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form data
             const formData = new FormData(this);
             const name = formData.get('name').trim();
             const email = formData.get('email').trim();
             const subject = formData.get('subject').trim();
             const message = formData.get('message').trim();
-            
-            // Clear previous error states
+
+            // Clear previous error styles
             const inputs = this.querySelectorAll('input, textarea');
             inputs.forEach(input => {
                 input.style.borderColor = 'rgba(255, 255, 255, 0.1)';
             });
-            
-            // Validate form
+
+            // Validation
             let isValid = true;
-            
+
             if (!name) {
                 showFieldError(this.querySelector('#name'), 'Name is required');
                 isValid = false;
             }
-            
+
             if (!email) {
                 showFieldError(this.querySelector('#email'), 'Email is required');
                 isValid = false;
             } else if (!isValidEmail(email)) {
-                showFieldError(this.querySelector('#email'), 'Please enter a valid email address');
+                showFieldError(this.querySelector('#email'), 'Enter a valid email address');
                 isValid = false;
             }
-            
+
             if (!subject) {
                 showFieldError(this.querySelector('#subject'), 'Subject is required');
                 isValid = false;
             }
-            
+
             if (!message) {
                 showFieldError(this.querySelector('#message'), 'Message is required');
                 isValid = false;
             }
-            
+
             if (!isValid) {
                 showNotification('Please fix the errors and try again', 'error');
                 return;
             }
-            
-            // Simulate form submission
+
+            // Send form to Formspree
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
-            
+
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
             submitBtn.style.opacity = '0.7';
-            
-            setTimeout(() => {
-                showNotification(`Thank you ${name}! Your message has been sent successfully. I'll get back to you soon.`, 'success');
-                this.reset();
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    showNotification(`Thank you ${name}! Your message has been sent successfully.`, 'success');
+                    this.reset();
+                } else {
+                    showNotification('Something went wrong. Please try again later.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                showNotification('Network error. Please try again later.', 'error');
+            })
+            .finally(() => {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = '1';
-            }, 2000);
+            });
         });
     }
 }
