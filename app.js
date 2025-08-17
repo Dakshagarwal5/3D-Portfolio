@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
 
+// Enhanced initialization with modern features
 function initializeApp() {
     // Initialize all components
     initTypewriter();
@@ -20,6 +21,14 @@ function initializeApp() {
     initProjectCardShine();
     initThemeToggle();
     initScrollTop();
+    
+    // New modern features
+    initIntersectionObserver();
+    initTouchGestures();
+    initKeyboardNavigation();
+    initPerformanceOptimizations();
+    initAccessibilityEnhancements();
+    initModernAnimations();
 }
 
 // Typewriter Effect
@@ -481,149 +490,444 @@ function showNotification(message, type = 'info') {
     }, timeout);
 }
 
-// Performance optimization: Debounce function
-function debounce(func, wait) {
+// Enhanced intersection observer for better animations
+function initIntersectionObserver() {
+    const observerOptions = {
+        threshold: [0, 0.1, 0.5, 1],
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const element = entry.target;
+            const ratio = entry.intersectionRatio;
+            
+            if (entry.isIntersecting) {
+                element.classList.add('in-view');
+                
+                // Staggered animation for child elements
+                const children = element.querySelectorAll('.animate-child');
+                children.forEach((child, index) => {
+                    setTimeout(() => {
+                        child.classList.add('animate-in');
+                    }, index * 100);
+                });
+                
+                // Trigger custom animations based on element type
+                if (element.classList.contains('stat-card')) {
+                    triggerStatAnimation(element);
+                }
+                
+                if (element.classList.contains('skill-item')) {
+                    triggerSkillAnimation(element);
+                }
+                
+                // Update element opacity based on intersection ratio
+                element.style.opacity = Math.max(0.3, ratio);
+            } else {
+                element.style.opacity = Math.max(0.1, ratio);
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all animated elements
+    const animatedElements = document.querySelectorAll(
+        '.project-card, .achievement-card, .skill-category, .stat-card, .timeline-item, .contact-item'
+    );
+    
+    animatedElements.forEach(el => {
+        observer.observe(el);
+        el.style.transition = 'opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+    });
+}
+
+// Enhanced touch gestures for mobile
+function initTouchGestures() {
+    let touchStartY = 0;
+    let touchStartX = 0;
+    
+    // Swipe gestures for navigation
+    document.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    document.addEventListener('touchend', (e) => {
+        const touchEndY = e.changedTouches[0].clientY;
+        const touchEndX = e.changedTouches[0].clientX;
+        const deltaY = touchStartY - touchEndY;
+        const deltaX = touchStartX - touchEndX;
+        
+        // Vertical swipe for sections
+        if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
+            if (deltaY > 0) {
+                // Swipe up - next section
+                scrollToNextSection();
+            } else {
+                // Swipe down - previous section
+                scrollToPreviousSection();
+            }
+        }
+        
+        // Horizontal swipe for theme toggle (right edge)
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 100 && touchStartX > window.innerWidth - 100) {
+            const themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) themeBtn.click();
+        }
+    }, { passive: true });
+    
+    // Enhanced touch feedback for interactive elements
+    const interactiveElements = document.querySelectorAll('.btn, .nav-link, .project-card, .social-link');
+    
+    interactiveElements.forEach(element => {
+        element.addEventListener('touchstart', () => {
+            element.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        element.addEventListener('touchend', () => {
+            setTimeout(() => {
+                element.style.transform = '';
+            }, 150);
+        }, { passive: true });
+    });
+}
+
+// Enhanced keyboard navigation
+function initKeyboardNavigation() {
+    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    let currentFocusIndex = 0;
+    
+    document.addEventListener('keydown', (e) => {
+        const focusableList = Array.from(document.querySelectorAll(focusableElements));
+        
+        switch (e.key) {
+            case 'Tab':
+                // Enhanced tab navigation with visual feedback
+                if (!e.shiftKey) {
+                    currentFocusIndex = (currentFocusIndex + 1) % focusableList.length;
+                } else {
+                    currentFocusIndex = (currentFocusIndex - 1 + focusableList.length) % focusableList.length;
+                }
+                break;
+                
+            case 'ArrowDown':
+                e.preventDefault();
+                scrollToNextSection();
+                break;
+                
+            case 'ArrowUp':
+                e.preventDefault();
+                scrollToPreviousSection();
+                break;
+                
+            case 'Home':
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                break;
+                
+            case 'End':
+                e.preventDefault();
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                break;
+                
+            case 'Escape':
+                // Close any open modals or menus
+                closeAllModals();
+                break;
+        }
+    });
+}
+
+// Performance optimizations
+function initPerformanceOptimizations() {
+    // Lazy load images
+    const images = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+    
+    images.forEach(img => imageObserver.observe(img));
+    
+    // Throttle scroll events
+    let scrollTimeout;
+    const originalScrollHandler = window.onscroll;
+    
+    window.onscroll = () => {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        
+        scrollTimeout = setTimeout(() => {
+            if (originalScrollHandler) originalScrollHandler();
+        }, 16); // ~60fps
+    };
+    
+    // Preload critical resources
+    const preloadLinks = [
+        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
+    ];
+    
+    preloadLinks.forEach(href => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'style';
+        link.href = href;
+        document.head.appendChild(link);
+    });
+}
+
+// Accessibility enhancements
+function initAccessibilityEnhancements() {
+    // Skip to main content link
+    const skipLink = document.createElement('a');
+    skipLink.href = '#main';
+    skipLink.className = 'skip-link';
+    skipLink.textContent = 'Skip to main content';
+    skipLink.style.cssText = `
+        position: absolute;
+        top: -40px;
+        left: 6px;
+        background: var(--primary-color);
+        color: white;
+        padding: 8px;
+        text-decoration: none;
+        border-radius: 4px;
+        z-index: 10000;
+        transition: top 0.3s;
+    `;
+    
+    skipLink.addEventListener('focus', () => {
+        skipLink.style.top = '6px';
+    });
+    
+    skipLink.addEventListener('blur', () => {
+        skipLink.style.top = '-40px';
+    });
+    
+    document.body.insertBefore(skipLink, document.body.firstChild);
+    
+    // Add main landmark
+    const mainContent = document.querySelector('.hero');
+    if (mainContent) {
+        mainContent.setAttribute('id', 'main');
+        mainContent.setAttribute('role', 'main');
+    }
+    
+    // Enhanced ARIA labels
+    const sections = document.querySelectorAll('section');
+    sections.forEach((section, index) => {
+        if (!section.getAttribute('aria-label')) {
+            const heading = section.querySelector('h1, h2, h3');
+            if (heading) {
+                section.setAttribute('aria-labelledby', heading.id || `section-${index}`);
+                if (!heading.id) heading.id = `section-${index}`;
+            }
+        }
+    });
+    
+    // Live region for dynamic content
+    const liveRegion = document.createElement('div');
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('aria-atomic', 'true');
+    liveRegion.className = 'sr-only';
+    liveRegion.id = 'live-region';
+    document.body.appendChild(liveRegion);
+}
+
+// Modern animations with better performance
+function initModernAnimations() {
+    // Parallax effect for hero elements
+    const parallaxElements = document.querySelectorAll('.parallax');
+    
+    const handleParallax = debounce(() => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        parallaxElements.forEach(element => {
+            element.style.transform = `translateY(${rate}px)`;
+        });
+    }, 16);
+    
+    window.addEventListener('scroll', handleParallax);
+    
+    // Smooth reveal animations
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    revealElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(50px)';
+        element.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+        
+        observer.observe(element);
+    });
+}
+
+// Helper functions for navigation
+function scrollToNextSection() {
+    const sections = document.querySelectorAll('section');
+    const currentSection = getCurrentSection();
+    const nextIndex = (currentSection + 1) % sections.length;
+    
+    sections[nextIndex].scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
+    
+    announceToScreenReader(`Navigated to ${sections[nextIndex].getAttribute('aria-label') || 'next section'}`);
+}
+
+function scrollToPreviousSection() {
+    const sections = document.querySelectorAll('section');
+    const currentSection = getCurrentSection();
+    const prevIndex = (currentSection - 1 + sections.length) % sections.length;
+    
+    sections[prevIndex].scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
+    
+    announceToScreenReader(`Navigated to ${sections[prevIndex].getAttribute('aria-label') || 'previous section'}`);
+}
+
+function getCurrentSection() {
+    const sections = document.querySelectorAll('section');
+    const scrollPos = window.scrollY + 100;
+    
+    for (let i = sections.length - 1; i >= 0; i--) {
+        if (sections[i].offsetTop <= scrollPos) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+function closeAllModals() {
+    const modals = document.querySelectorAll('.modal, .nav-menu.active');
+    modals.forEach(modal => {
+        modal.classList.remove('active');
+    });
+    
+    const hamburger = document.querySelector('.hamburger');
+    if (hamburger) hamburger.classList.remove('active');
+}
+
+function announceToScreenReader(message) {
+    const liveRegion = document.getElementById('live-region');
+    if (liveRegion) {
+        liveRegion.textContent = message;
+        setTimeout(() => {
+            liveRegion.textContent = '';
+        }, 1000);
+    }
+}
+
+function triggerStatAnimation(element) {
+    const number = element.querySelector('.stat-number');
+    const target = parseInt(element.dataset.target);
+    
+    if (number && !element.classList.contains('animated')) {
+        element.classList.add('animated');
+        animateNumber(number, 0, target, 2000);
+    }
+}
+
+function triggerSkillAnimation(element) {
+    if (!element.classList.contains('skill-animated')) {
+        element.classList.add('skill-animated');
+        element.style.transform = 'scale(1.05)';
+        setTimeout(() => {
+            element.style.transform = '';
+        }, 300);
+    }
+}
+
+function animateNumber(element, start, end, duration) {
+    const startTime = performance.now();
+    
+    function updateNumber(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(start + (end - start) * easeOutQuart);
+        
+        element.textContent = current.toLocaleString();
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateNumber);
+        } else {
+            element.textContent = end.toLocaleString();
+        }
+    }
+    
+    requestAnimationFrame(updateNumber);
+}
+
+// Enhanced debounce function with immediate option
+function debounce(func, wait, immediate = false) {
     let timeout;
     return function executedFunction(...args) {
         const later = () => {
             clearTimeout(timeout);
-            func(...args);
+            if (!immediate) func(...args);
         };
+        const callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
+        if (callNow) func(...args);
     };
 }
 
-// Add some extra interactive effects
-document.addEventListener('mousemove', function(e) {
-    // Cursor glow effect
-    let cursor = document.querySelector('.cursor-glow');
-    if (!cursor) {
-        const cursorGlow = document.createElement('div');
-        cursorGlow.className = 'cursor-glow';
-        cursorGlow.style.cssText = `
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-        `;
-        document.body.appendChild(cursorGlow);
-        cursor = cursorGlow;
-    }
-    
-    cursor.style.left = (e.clientX - 10) + 'px';
-    cursor.style.top = (e.clientY - 10) + 'px';
-});
+// Enhanced throttle function
+function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
 
-// Keyboard navigation support
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        // Close mobile menu
-        const navMenu = document.querySelector('.nav-menu');
-        const hamburger = document.querySelector('.hamburger');
-        if (navMenu && hamburger) {
-            navMenu.classList.remove('active');
-            hamburger.classList.remove('active');
-        }
-        
-        // Remove any notifications
-        const notifications = document.querySelectorAll('.notification');
-        notifications.forEach(notification => notification.remove());
-    }
+// Add modern CSS classes to HTML elements
+document.addEventListener('DOMContentLoaded', () => {
+    // Add reveal class to elements that should animate in
+    const elementsToReveal = document.querySelectorAll(
+        '.project-card, .achievement-card, .skill-category, .timeline-item'
+    );
+    elementsToReveal.forEach(el => el.classList.add('reveal'));
+    
+    // Add parallax class to background elements
+    const backgroundElements = document.querySelectorAll(
+        '.floating-shapes, .neon-grid'
+    );
+    backgroundElements.forEach(el => el.classList.add('parallax'));
+    
+    // Add interactive hover class to clickable elements
+    const interactiveElements = document.querySelectorAll(
+        '.btn, .nav-link, .project-card, .social-link, .contact-item'
+    );
+    interactiveElements.forEach(el => el.classList.add('interactive-hover'));
 });
-
-// Add loading animation
-window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
-    
-    // Add some CSS for loading state
-    const style = document.createElement('style');
-    style.textContent = `
-        body:not(.loaded) {
-            overflow: hidden;
-        }
-        
-        body:not(.loaded)::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0a0a;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        body:not(.loaded)::after {
-            content: 'Loading Portfolio...';
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #00d4ff;
-            font-size: 1.5rem;
-            font-weight: bold;
-            z-index: 10001;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-    `;
-    document.head.appendChild(style);
-});
-
-// Add CSS for active navigation and animate-in classes
-const additionalStyles = document.createElement('style');
-additionalStyles.textContent = `
-    .nav-link.active {
-        color: var(--primary-color) !important;
-    }
-    
-    .nav-link.active::after {
-        width: 100% !important;
-    }
-    
-    .animate-in {
-        opacity: 1 !important;
-        transform: translateY(0) !important;
-    }
-    
-    .hamburger.active span:nth-child(1) {
-        transform: rotate(-45deg) translate(-5px, 6px);
-    }
-    
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .hamburger.active span:nth-child(3) {
-        transform: rotate(45deg) translate(-5px, -6px);
-    }
-    
-    /* Smooth focus transitions */
-    *:focus {
-        outline: 2px solid #00d4ff;
-        outline-offset: 2px;
-    }
-    
-    /* Improve button accessibility */
-    button:focus-visible,
-    .btn:focus-visible {
-        outline: 2px solid #00d4ff;
-        outline-offset: 2px;
-    }
-`;
-document.head.appendChild(additionalStyles);
 
 let __hero3D = { scene: null, lights: {}, objects: {}, renderer: null, camera: null };
 
@@ -782,24 +1086,114 @@ function getCurrentTheme() {
 function initThemeToggle() {
     const btn = document.getElementById('theme-toggle');
     const icon = btn ? btn.querySelector('.theme-icon') : null;
-    // Determine initial
+    
+    // Determine initial theme
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initial = saved || (prefersDark ? 'dark' : 'light');
+    
+    // Apply initial theme
     applyTheme(initial);
-
-    if (btn) {
-        btn.setAttribute('aria-checked', initial === 'light' ? 'false' : 'true');
-        if (icon) icon.textContent = initial === 'light' ? '🌙' : '☀️';
-        btn.addEventListener('click', () => {
-            const next = getCurrentTheme() === 'light' ? 'dark' : 'light';
-            applyTheme(next);
-            if (icon) icon.textContent = next === 'light' ? '🌙' : '☀️';
-            btn.setAttribute('aria-checked', next === 'dark');
-            localStorage.setItem('theme', next);
-            applyThemeToHero3D(next);
+    
+    if (btn && icon) {
+        // Set initial state
+        updateThemeButton(btn, icon, initial);
+        
+        // Add click handler with improved feedback
+        btn.addEventListener('click', (e) => {
+            // Prevent double clicks during animation
+            if (btn.classList.contains('animating')) return;
+            
+            btn.classList.add('animating');
+            
+            // Add click animation
+            btn.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                const current = getCurrentTheme();
+                const next = current === 'light' ? 'dark' : 'light';
+                
+                // Apply theme changes
+                applyTheme(next);
+                updateThemeButton(btn, icon, next);
+                localStorage.setItem('theme', next);
+                applyThemeToHero3D(next);
+                
+                // Reset button state
+                btn.style.transform = '';
+                btn.classList.remove('animating');
+                
+                // Show subtle feedback
+                showThemeChangeNotification(next);
+            }, 150);
+        });
+        
+        // Add keyboard support
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                btn.click();
+            }
         });
     }
+}
+
+function updateThemeButton(btn, icon, theme) {
+    const isDark = theme === 'dark';
+    btn.setAttribute('aria-checked', isDark.toString());
+    btn.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} theme`);
+    
+    // Update icon with smooth transition
+    icon.style.transform = 'scale(0)';
+    setTimeout(() => {
+        icon.textContent = isDark ? '☀️' : '🌙';
+        icon.style.transform = 'scale(1)';
+    }, 200);
+}
+
+function showThemeChangeNotification(theme) {
+    // Create a subtle notification
+    const notification = document.createElement('div');
+    notification.className = 'theme-notification';
+    notification.textContent = `Switched to ${theme} mode`;
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--glass-border);
+        color: var(--color-text);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        z-index: 10000;
+        opacity: 0;
+        transform: translateX(100px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    requestAnimationFrame(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateX(0)';
+    });
+    
+    // Animate out and remove
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100px)';
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 300);
+    }, 2000);
 }
 
 function applyTheme(theme) {
