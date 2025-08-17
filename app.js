@@ -414,12 +414,16 @@ function initContactForm() {
 
 // Helper function to show field errors
 function showFieldError(field, message) {
-    field.style.borderColor = '#ff006e';
+    const cs = getComputedStyle(document.body);
+    const errorColor = cs.getPropertyValue('--secondary-color').trim() || '#ff006e';
+    const neutral = getCurrentTheme() === 'light' ? 'rgba(0,0,0,0.12)' : 'rgba(255, 255, 255, 0.1)';
+
+    field.style.borderColor = errorColor;
     field.style.boxShadow = '0 0 10px rgba(255, 0, 110, 0.3)';
-    
+
     // Remove error state after user starts typing
     field.addEventListener('input', function() {
-        this.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+        this.style.borderColor = neutral;
         this.style.boxShadow = 'none';
     }, { once: true });
 }
@@ -787,15 +791,16 @@ function initThemeToggle() {
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initial = saved || (prefersDark ? 'dark' : 'light');
     applyTheme(initial);
+    applyThemeToHero3D(initial);
 
     if (btn) {
-        btn.setAttribute('aria-checked', initial === 'light' ? 'false' : 'true');
+        btn.setAttribute('aria-checked', initial === 'dark' ? 'true' : 'false');
         if (icon) icon.textContent = initial === 'light' ? '🌙' : '☀️';
         btn.addEventListener('click', () => {
             const next = getCurrentTheme() === 'light' ? 'dark' : 'light';
             applyTheme(next);
             if (icon) icon.textContent = next === 'light' ? '🌙' : '☀️';
-            btn.setAttribute('aria-checked', next === 'dark');
+            btn.setAttribute('aria-checked', next === 'dark' ? 'true' : 'false');
             localStorage.setItem('theme', next);
             applyThemeToHero3D(next);
         });
