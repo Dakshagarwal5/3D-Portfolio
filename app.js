@@ -29,6 +29,7 @@ function initializeApp() {
     initPerformanceOptimizations();
     initAccessibilityEnhancements();
     initModernAnimations();
+    initProjectImages(); // Add this new function
 }
 
 // Typewriter Effect
@@ -1276,5 +1277,45 @@ function initProjectCardShine() {
             card.style.removeProperty('--mouse-x');
             card.style.removeProperty('--mouse-y');
         });
+    });
+}
+
+// Enhanced image loading for project cards
+function initProjectImages() {
+    const projectImages = document.querySelectorAll('.project-img');
+    
+    projectImages.forEach(img => {
+        // Add loading class initially
+        img.classList.add('loading');
+        
+        // Handle successful image load
+        img.addEventListener('load', () => {
+            img.classList.remove('loading');
+            img.classList.add('loaded');
+            
+            // Add a slight delay for smooth transition
+            setTimeout(() => {
+                img.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+            }, 100);
+        });
+        
+        // Handle image load error
+        img.addEventListener('error', () => {
+            img.classList.remove('loading');
+            img.style.display = 'none';
+            
+            // Show fallback background
+            const container = img.closest('.project-image');
+            if (container) {
+                container.classList.add('image-error');
+            }
+        });
+        
+        // If image is already cached and loaded
+        if (img.complete && img.naturalHeight !== 0) {
+            img.classList.remove('loading');
+            img.classList.add('loaded');
+        }
     });
 }
