@@ -7,6 +7,7 @@ function initializeApp() {
     // Initialize all components
     initTypewriter();
     initParticles();
+    initHero3D();
     initNavigation();
     initScrollAnimations();
     initStatsCounter();
@@ -14,6 +15,9 @@ function initializeApp() {
     initContactForm();
     initMobileMenu();
     initProjectLinks();
+    initMagneticButtons();
+    initScrollProgressBar();
+    initProjectCardShine();
 }
 
 // Typewriter Effect
@@ -622,3 +626,175 @@ additionalStyles.textContent = `
     }
 `;
 document.head.appendChild(additionalStyles);
+
+// 3D WebGL Hero Background using Three.js
+function initHero3D() {
+    try {
+        if (!window.THREE) return;
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const canvas = document.getElementById('hero-canvas');
+        if (!canvas) return;
+
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0a0a0a, 0.008);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 60);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const rootGroup = new THREE.Group();
+        scene.add(rootGroup);
+
+        // Lighting
+        const ambient = new THREE.AmbientLight(0x1a1a1a, 1.2);
+        scene.add(ambient);
+        const point = new THREE.PointLight(0x00d4ff, 1.2, 300);
+        point.position.set(30, 40, 50);
+        scene.add(point);
+
+        // Central geometry
+        const coreGeo = new THREE.IcosahedronGeometry(12, 1);
+        const coreMat = new THREE.MeshStandardMaterial({
+            color: 0x0a0a0a,
+            metalness: 0.6,
+            roughness: 0.2,
+            emissive: 0x0c2a33,
+            emissiveIntensity: 0.7,
+            envMapIntensity: 0.6,
+            wireframe: false
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        rootGroup.add(core);
+
+        // Wireframe overlay
+        const wireMat = new THREE.MeshBasicMaterial({ color: 0x00d4ff, wireframe: true, transparent: true, opacity: 0.15 });
+        const wire = new THREE.Mesh(coreGeo, wireMat);
+        wire.scale.setScalar(1.02);
+        rootGroup.add(wire);
+
+        // Starfield
+        const starCount = 2000;
+        const starGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 600;      // x
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 600;  // y
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 600;  // z
+        }
+        starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const starMat = new THREE.PointsMaterial({ color: 0x00d4ff, size: 1.5, sizeAttenuation: true, transparent: true, opacity: 0.8 });
+        const stars = new THREE.Points(starGeo, starMat);
+        scene.add(stars);
+
+        // Mouse parallax
+        const mouse = { x: 0, y: 0 };
+        const target = { x: 0, y: 0 };
+        const damp = 0.05;
+        window.addEventListener('mousemove', (e) => {
+            const nx = (e.clientX / window.innerWidth) * 2 - 1;
+            const ny = (e.clientY / window.innerHeight) * 2 - 1;
+            mouse.x = nx;
+            mouse.y = ny;
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        let last = performance.now();
+        function animate(now) {
+            const dt = Math.min(0.05, (now - last) / 1000);
+            last = now;
+
+            // Ease towards mouse
+            target.x += (mouse.x - target.x) * 0.05;
+            target.y += (mouse.y - target.y) * 0.05;
+
+            if (!reduceMotion) {
+                rootGroup.rotation.y += 0.15 * dt;
+                rootGroup.rotation.x += 0.07 * dt;
+                stars.rotation.y -= 0.02 * dt;
+                stars.rotation.x += 0.01 * dt;
+            }
+
+            // Parallax
+            camera.position.x = target.x * 5;
+            camera.position.y = -target.y * 3;
+            camera.lookAt(0, 0, 0);
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+    } catch (err) {
+        console.error('initHero3D error', err);
+    }
+}
+
+// Magnetic hover for primary buttons
+function initMagneticButtons() {
+    const buttons = document.querySelectorAll('.btn-3d');
+    buttons.forEach((btn) => {
+        let rect = null;
+        function onMove(e) {
+            if (!rect) rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const dx = (x - cx) / cx;
+            const dy = (y - cy) / cy;
+            btn.style.transform = `translate3d(${dx * 6}px, ${dy * 6}px, 0) scale(1.04)`;
+            btn.style.boxShadow = `${-dx * 12}px ${dy * 12}px 30px rgba(0, 212, 255, 0.25)`;
+        }
+        function onLeave() {
+            btn.style.transform = '';
+            btn.style.boxShadow = '';
+            rect = null;
+        }
+        btn.addEventListener('mousemove', onMove);
+        btn.addEventListener('mouseleave', onLeave);
+    });
+}
+
+// Scroll progress bar
+function initScrollProgressBar() {
+    const bar = document.createElement('div');
+    bar.id = 'scroll-progress';
+    bar.style.cssText = `position:fixed;top:0;left:0;height:3px;width:0;z-index:1001;` +
+        `background: linear-gradient(90deg, #00d4ff, #8338ec);box-shadow:0 0 10px rgba(0,212,255,0.5);`;
+    document.body.appendChild(bar);
+
+    function update() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
+        bar.style.width = (progress * 100) + '%';
+    }
+    window.addEventListener('scroll', debounce(update, 10));
+    update();
+}
+
+// Project card shine CSS variables update
+function initProjectCardShine() {
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.removeProperty('--mouse-x');
+            card.style.removeProperty('--mouse-y');
+        });
+    });
+}
