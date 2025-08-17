@@ -312,27 +312,15 @@ function initProjectTilt() {
     const projectCards = document.querySelectorAll('[data-tilt]');
     
     projectCards.forEach(card => {
+        // Simple hover effect - just add a subtle lift
         card.addEventListener('mouseenter', function() {
-            this.style.transition = 'transform 0.1s ease-out';
-        });
-        
-        card.addEventListener('mousemove', function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / centerY * -10; // Max 10 degrees
-            const rotateY = (x - centerX) / centerX * 10;
-            
-            this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+            this.style.transition = 'transform 0.3s ease';
+            this.style.transform = 'translateY(-5px)';
         });
         
         card.addEventListener('mouseleave', function() {
-            this.style.transition = 'transform 0.5s ease';
-            this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            this.style.transition = 'transform 0.3s ease';
+            this.style.transform = 'translateY(0)';
         });
     });
 }
@@ -1264,20 +1252,9 @@ function initScrollProgressBar() {
 
 // Project card shine CSS variables update
 function initProjectCardShine() {
-    const cards = document.querySelectorAll('.project-card');
-    cards.forEach((card) => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.removeProperty('--mouse-x');
-            card.style.removeProperty('--mouse-y');
-        });
-    });
+    // Simplified - no complex mouse tracking animations
+    // Cards will use simple CSS hover effects instead
+    return;
 }
 
 // Enhanced image loading for project cards
