@@ -1791,11 +1791,15 @@ section {
   --primary-color: #1363df;
   --secondary-color: #ff3d71;
   --accent-color: #7c4dff;
-  --card-bg: rgba(0,0,0,0.05);
-  --text-secondary: #3f3f46;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text-secondary: #4a4a4a;
+  --text-primary: #1a1a1a;
+  --dark-bg: #ffffff;
+  --neon-green: #059669;
   --glass-bg: rgba(255, 255, 255, 0.8);
   --glass-border: rgba(0, 0, 0, 0.1);
   --glass-blur: blur(20px);
+  --gradient-primary: linear-gradient(135deg, #1363df, #7c4dff);
 }
 
 body { background: var(--page-bg); color: var(--page-text); }
@@ -1901,6 +1905,150 @@ body { background: var(--page-bg); color: var(--page-text); }
 [data-theme="light"] .social-link:hover {
   background: #1363df !important;
   color: white !important;
+}
+
+/* Additional light theme fixes for missing elements */
+[data-theme="light"] .stat-label {
+  color: #6b7280 !important;
+}
+
+[data-theme="light"] .project-achievements .achievement {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .timeline-marker {
+  background: #1363df !important;
+  border: 3px solid #ffffff !important;
+}
+
+[data-theme="light"] .timeline-marker::before {
+  background: #1363df !important;
+}
+
+[data-theme="light"] .contact-details h3 {
+  color: #1363df !important;
+}
+
+[data-theme="light"] .contact-details a:hover {
+  color: #1363df !important;
+}
+
+[data-theme="light"] .achievement-icon {
+  filter: grayscale(0) brightness(1) !important;
+}
+
+[data-theme="light"] .contact-item {
+  border-left: 3px solid #1363df !important;
+}
+
+[data-theme="light"] .form-group input,
+[data-theme="light"] .form-group textarea {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 2px solid rgba(0, 0, 0, 0.1) !important;
+  color: #1a1a1a !important;
+}
+
+[data-theme="light"] .btn--full-width {
+  background: linear-gradient(135deg, #1363df, #0f52ba) !important;
+  color: white !important;
+}
+
+[data-theme="light"] .scroll-top-btn {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #1363df !important;
+  border: 2px solid rgba(19, 99, 223, 0.2) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .scroll-top-btn:hover {
+  background: #1363df !important;
+  color: white !important;
+}
+
+/* Ensure all buttons are visible in light theme */
+[data-theme="light"] .btn {
+  color: #1a1a1a !important;
+  border-color: rgba(19, 99, 223, 0.3) !important;
+}
+
+[data-theme="light"] .btn:hover {
+  color: #1363df !important;
+}
+
+[data-theme="light"] .hamburger {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+[data-theme="light"] .hamburger span {
+  background: #1a1a1a !important;
+  height: 2px !important;
+  width: 25px !important;
+  margin: 2px 0 !important;
+  display: block !important;
+}
+
+/* Fix any remaining text visibility issues */
+[data-theme="light"] .hero-content * {
+  color: inherit !important;
+}
+
+[data-theme="light"] .section-header * {
+  color: inherit !important;
+}
+
+/* Comprehensive light theme coverage for all missed elements */
+[data-theme="light"] .project-overlay {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+[data-theme="light"] .project-link {
+  background: #1363df !important;
+  color: white !important;
+}
+
+[data-theme="light"] .project-tech {
+  margin: 1rem 0 !important;
+}
+
+[data-theme="light"] .achievement-metric {
+  color: #1363df !important;
+  font-weight: bold !important;
+}
+
+[data-theme="light"] .timeline-achievements {
+  color: #4a4a4a !important;
+}
+
+[data-theme="light"] .skill-items {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+}
+
+[data-theme="light"] .contact-content {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 3rem !important;
+}
+
+@media (max-width: 768px) {
+  [data-theme="light"] .contact-content {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Ensure proper contrast for all interactive elements */
+[data-theme="light"] .nav-link.active {
+  background: rgba(19, 99, 223, 0.1) !important;
+  color: #1363df !important;
+}
+
+[data-theme="light"] .theme-notification {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #1a1a1a !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Enhanced navbar text visibility for light theme */
