@@ -1261,12 +1261,25 @@ section {
             45deg,
             transparent,
             transparent 10px,
-            rgba(255, 255, 255, 0.05) 10px,
-            rgba(255, 255, 255, 0.05) 20px
+            rgba(255, 255, 255, 0.1) 10px,
+            rgba(255, 255, 255, 0.1) 20px
         );
     z-index: 1;
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+/* Enhanced pattern for light theme */
+[data-theme="light"] .project-image::before {
+    background: 
+        linear-gradient(135deg, #1363df, #7c4dff),
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.3) 10px,
+            rgba(255, 255, 255, 0.3) 20px
+        );
 }
 
 .project-img:not(.loaded) + .project-image::before,
@@ -1282,9 +1295,17 @@ section {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 3rem;
-    opacity: 0.3;
+    opacity: 0.6;
     z-index: 2;
     transition: opacity 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Enhanced visibility for light theme */
+[data-theme="light"] .project-image::after {
+    opacity: 0.8;
+    color: #1363df;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .project-img.loaded ~ .project-image::after {
@@ -1779,6 +1800,18 @@ section {
 body { background: var(--page-bg); color: var(--page-text); }
 .navbar { background: var(--nav-bg); }
 
+/* Enhanced navbar text visibility for light theme */
+[data-theme="light"] .nav-link,
+[data-theme="light"] .nav-logo span {
+  color: #1a1a1a !important;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+[data-theme="light"] .nav-link:hover {
+  color: #1363df !important;
+}
+
 /* Theme toggle button - Modern design */
 .theme-btn {
   position: relative;
@@ -1897,9 +1930,10 @@ body { background: var(--page-bg); color: var(--page-text); }
 }
 
 [data-theme="light"] .navbar {
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(30px);
 }
 
 .nav-container {
@@ -2060,6 +2094,93 @@ body { background: var(--page-bg); color: var(--page-text); }
   background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.08) 0%, transparent 50%);
 }
 
+/* Comprehensive Light Theme Hero Section Design */
+[data-theme="light"] .hero {
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 248, 255, 0.95) 100%),
+    radial-gradient(ellipse at top, rgba(19, 99, 223, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(124, 77, 255, 0.08) 0%, transparent 50%);
+}
+
+[data-theme="light"] .hero-background {
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 248, 255, 0.9) 100%),
+    radial-gradient(ellipse at center, rgba(19, 99, 223, 0.12) 0%, transparent 60%);
+}
+
+/* Light theme floating shapes with better visibility */
+[data-theme="light"] .shape {
+  background: linear-gradient(45deg, rgba(19, 99, 223, 0.3), rgba(124, 77, 255, 0.3));
+  opacity: 0.4;
+  box-shadow: 0 4px 20px rgba(19, 99, 223, 0.2);
+}
+
+/* Light theme particles */
+[data-theme="light"] .particle {
+  background: rgba(19, 99, 223, 0.8);
+  box-shadow: 0 0 4px rgba(19, 99, 223, 0.6);
+}
+
+/* Enhanced hero content for light theme */
+[data-theme="light"] .hero-title {
+  color: #1a1a1a;
+  text-shadow: 0 2px 10px rgba(19, 99, 223, 0.1);
+}
+
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #1363df, #7c4dff, #ff3d71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 4px rgba(19, 99, 223, 0.2));
+}
+
+[data-theme="light"] .hero-description {
+  color: #4a4a4a;
+  text-shadow: none;
+}
+
+[data-theme="light"] .typewriter {
+  color: #1363df;
+  text-shadow: 0 1px 3px rgba(19, 99, 223, 0.2);
+}
+
+/* Light theme buttons with enhanced visibility */
+[data-theme="light"] .btn--primary {
+  background: linear-gradient(135deg, #1363df, #0f52ba);
+  color: white;
+  box-shadow: 
+    0 8px 25px rgba(19, 99, 223, 0.3),
+    0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(19, 99, 223, 0.3);
+}
+
+[data-theme="light"] .btn--primary:hover {
+  background: linear-gradient(135deg, #0f52ba, #0d47a1);
+  box-shadow: 
+    0 12px 35px rgba(19, 99, 223, 0.4),
+    0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+[data-theme="light"] .btn--secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1363df;
+  border: 2px solid #1363df;
+  box-shadow: 
+    0 8px 25px rgba(19, 99, 223, 0.15),
+    0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .btn--secondary:hover {
+  background: #1363df;
+  color: white;
+  box-shadow: 
+    0 12px 35px rgba(19, 99, 223, 0.25),
+    0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
 .hero-title {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 900;
@@ -2173,9 +2294,24 @@ body { background: var(--page-bg); color: var(--page-text); }
 }
 [data-theme="light"] .neon-grid {
   background:
-    linear-gradient(rgba(19,99,223,0.2) 1px, transparent 1px) 0 0 / 40px 40px,
-    linear-gradient(90deg, rgba(19,99,223,0.2) 1px, transparent 1px) 0 0 / 40px 40px;
-  opacity: 0.35;
+    linear-gradient(rgba(19,99,223,0.25) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, rgba(19,99,223,0.25) 1px, transparent 1px) 0 0 / 40px 40px;
+  opacity: 0.4;
+  filter: drop-shadow(0 0 10px rgba(19,99,223,0.2));
+}
+
+/* Light theme scroll indicator */
+[data-theme="light"] .scroll-indicator {
+  opacity: 0.8;
+}
+
+[data-theme="light"] .scroll-arrow {
+  border-color: transparent transparent #1363df #1363df;
+  box-shadow: 0 2px 8px rgba(19, 99, 223, 0.3);
+}
+
+[data-theme="light"] .scroll-indicator::before {
+  background: linear-gradient(to bottom, transparent, rgba(19, 99, 223, 0.1));
 }
 
 /* Scroll to top button */
@@ -2210,6 +2346,44 @@ body { background: var(--page-bg); color: var(--page-text); }
 
 /* Navbar background transition for theme */
 .navbar { transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease; }
+
+/* Smooth transitions for theme changes */
+.hero, .hero-background, .shape, .particle, .hero-title, .hero-description, .typewriter,
+.btn--primary, .btn--secondary, .scroll-arrow, .scroll-indicator {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Additional light theme improvements */
+[data-theme="light"] .nav-menu {
+  background: rgba(255, 255, 255, 0.98);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(30px);
+}
+
+[data-theme="light"] .nav-menu .nav-link {
+  color: #1a1a1a !important;
+}
+
+[data-theme="light"] .nav-menu .nav-link:hover {
+  color: #1363df !important;
+  background: rgba(19, 99, 223, 0.1);
+}
+
+/* Light theme hamburger menu */
+[data-theme="light"] .hamburger span {
+  background: #1a1a1a;
+}
+
+[data-theme="light"] .hamburger:hover span {
+  background: #1363df;
+}
+
+/* Light theme mobile menu improvements */
+@media (max-width: 768px) {
+  [data-theme="light"] .nav-menu {
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+  }
+}
 
 /* Modern animations and micro-interactions */
 @keyframes fadeInUp {
