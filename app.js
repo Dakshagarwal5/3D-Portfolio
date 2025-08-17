@@ -18,6 +18,8 @@ function initializeApp() {
     initMagneticButtons();
     initScrollProgressBar();
     initProjectCardShine();
+    initThemeToggle();
+    initScrollTop();
 }
 
 // Typewriter Effect
@@ -171,13 +173,9 @@ function initNavigation() {
     // Navbar background on scroll
     window.addEventListener('scroll', debounce(() => {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(10, 10, 10, 0.98)';
-            navbar.style.backdropFilter = 'blur(20px)';
-        } else {
-            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
-            navbar.style.backdropFilter = 'blur(20px)';
-        }
+        if (!navbar) return;
+        navbar.style.background = 'var(--nav-bg)';
+        navbar.style.backdropFilter = 'blur(20px)';
     }, 10));
 }
 
@@ -627,7 +625,8 @@ additionalStyles.textContent = `
 `;
 document.head.appendChild(additionalStyles);
 
-// 3D WebGL Hero Background using Three.js
+let __hero3D = { scene: null, lights: {}, objects: {}, renderer: null, camera: null };
+
 function initHero3D() {
     try {
         if (!window.THREE) return;
@@ -689,10 +688,20 @@ function initHero3D() {
         const stars = new THREE.Points(starGeo, starMat);
         scene.add(stars);
 
+        __hero3D = {
+            scene,
+            renderer,
+            camera,
+            lights: { ambient, point },
+            objects: { rootGroup, core, wire, stars }
+        };
+
+        // Apply initial theme colors
+        applyThemeToHero3D(getCurrentTheme());
+
         // Mouse parallax
         const mouse = { x: 0, y: 0 };
         const target = { x: 0, y: 0 };
-        const damp = 0.05;
         window.addEventListener('mousemove', (e) => {
             const nx = (e.clientX / window.innerWidth) * 2 - 1;
             const ny = (e.clientY / window.innerHeight) * 2 - 1;
@@ -716,6 +725,7 @@ function initHero3D() {
             target.x += (mouse.x - target.x) * 0.05;
             target.y += (mouse.y - target.y) * 0.05;
 
+            const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             if (!reduceMotion) {
                 rootGroup.rotation.y += 0.15 * dt;
                 rootGroup.rotation.x += 0.07 * dt;
@@ -735,6 +745,82 @@ function initHero3D() {
     } catch (err) {
         console.error('initHero3D error', err);
     }
+}
+
+function applyThemeToHero3D(theme) {
+    if (!__hero3D.scene) return;
+    const { scene, lights, objects } = __hero3D;
+    const isLight = theme === 'light';
+
+    // Fog/background tone
+    scene.fog.density = isLight ? 0.006 : 0.008;
+
+    // Light colors
+    lights.ambient.color.set(isLight ? 0xf0f0f0 : 0x1a1a1a);
+    lights.point.color.set(isLight ? 0x1363df : 0x00d4ff);
+
+    // Object materials
+    if (objects.core && objects.core.material) {
+        objects.core.material.color.set(isLight ? 0xffffff : 0x0a0a0a);
+        objects.core.material.emissive.set(isLight ? 0x172554 : 0x0c2a33);
+        objects.core.material.needsUpdate = true;
+    }
+    if (objects.wire && objects.wire.material) {
+        objects.wire.material.color.set(isLight ? 0x1363df : 0x00d4ff);
+        objects.wire.material.needsUpdate = true;
+    }
+    if (objects.stars && objects.stars.material) {
+        objects.stars.material.color.set(isLight ? 0x1363df : 0x00d4ff);
+        objects.stars.material.needsUpdate = true;
+    }
+}
+
+function getCurrentTheme() {
+    return document.body.getAttribute('data-theme') || 'dark';
+}
+
+function initThemeToggle() {
+    const btn = document.getElementById('theme-toggle');
+    const icon = btn ? btn.querySelector('.theme-icon') : null;
+    // Determine initial
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved || (prefersDark ? 'dark' : 'light');
+    applyTheme(initial);
+
+    if (btn) {
+        btn.setAttribute('aria-checked', initial === 'light' ? 'false' : 'true');
+        if (icon) icon.textContent = initial === 'light' ? '🌙' : '☀️';
+        btn.addEventListener('click', () => {
+            const next = getCurrentTheme() === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+            if (icon) icon.textContent = next === 'light' ? '🌙' : '☀️';
+            btn.setAttribute('aria-checked', next === 'dark');
+            localStorage.setItem('theme', next);
+            applyThemeToHero3D(next);
+        });
+    }
+}
+
+function applyTheme(theme) {
+    document.body.setAttribute('data-theme', theme);
+}
+
+function initScrollTop() {
+    const btn = document.getElementById('scrollTopBtn');
+    if (!btn) return;
+    const onScroll = () => {
+        if (window.scrollY > 400) {
+            btn.classList.add('show');
+        } else {
+            btn.classList.remove('show');
+        }
+    };
+    window.addEventListener('scroll', debounce(onScroll, 10));
+    onScroll();
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 }
 
 // Magnetic hover for primary buttons

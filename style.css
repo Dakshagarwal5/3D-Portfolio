@@ -1672,3 +1672,93 @@ section {
         min-width: auto;
     }
 }
+
+/* Theme variables and toggle styles */
+:root {
+  --nav-bg: rgba(10,10,10,0.95);
+  --page-bg: #0a0a0a;
+  --page-text: #ffffff;
+}
+[data-theme="light"] {
+  --nav-bg: rgba(255,255,255,0.8);
+  --page-bg: #ffffff;
+  --page-text: #0a0a0a;
+  --primary-color: #1363df;
+  --secondary-color: #ff3d71;
+  --accent-color: #7c4dff;
+  --card-bg: rgba(0,0,0,0.05);
+  --text-secondary: #3f3f46;
+}
+
+body { background: var(--page-bg); color: var(--page-text); }
+.navbar { background: var(--nav-bg); }
+
+.theme-btn {
+  margin-left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: var(--card-bg, rgba(255,255,255,0.08));
+  color: var(--page-text);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.theme-btn:hover { transform: translateY(-1px); border-color: var(--primary-color); }
+.theme-btn:active { transform: translateY(0); }
+.theme-icon { font-size: 18px; line-height: 1; }
+
+/* Neon perspective grid under hero */
+.neon-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(0,212,255,0.12) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, rgba(0,212,255,0.12) 1px, transparent 1px) 0 0 / 40px 40px;
+  transform-origin: top center;
+  transform: perspective(800px) rotateX(60deg) translateY(40%);
+  filter: drop-shadow(0 0 10px rgba(0,212,255,0.35));
+  opacity: 0.25;
+}
+[data-theme="light"] .neon-grid {
+  background:
+    linear-gradient(rgba(19,99,223,0.2) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, rgba(19,99,223,0.2) 1px, transparent 1px) 0 0 / 40px 40px;
+  opacity: 0.35;
+}
+
+/* Scroll to top button */
+.scroll-top-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: radial-gradient(circle at 30% 30%, rgba(0,212,255,0.25), rgba(131,56,236,0.25));
+  color: var(--page-text);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  z-index: 1002;
+}
+.scroll-top-btn.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.scroll-top-btn:hover { background: radial-gradient(circle at 30% 30%, rgba(0,212,255,0.35), rgba(131,56,236,0.35)); }
+
+/* Ensure layered hero items */
+.neon-grid { z-index: 1; }
+.floating-shapes { z-index: 2; }
+.particles { z-index: 3; }
+.hero-content { z-index: 4; }
+
+/* Navbar background transition for theme */
+.navbar { transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease; }
