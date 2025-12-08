@@ -164,15 +164,13 @@ function initNavigation() {
     
     window.addEventListener('scroll', debounce(updateActiveNav, 10));
     
-    // Navbar background on scroll
+    // Navbar background on scroll - Enhanced
     window.addEventListener('scroll', debounce(() => {
         const navbar = document.querySelector('.navbar');
         if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(10, 10, 10, 0.98)';
-            navbar.style.backdropFilter = 'blur(20px)';
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
-            navbar.style.backdropFilter = 'blur(20px)';
+            navbar.classList.remove('scrolled');
         }
     }, 10));
 }
